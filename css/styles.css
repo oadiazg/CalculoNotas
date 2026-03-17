@@ -1,0 +1,367 @@
+/* =========================================
+   Patología - Calculadora de Notas
+   ========================================= */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #6c63ff;
+  --primary-dark: #574fd6;
+  --secondary: #f50057;
+  --success: #00c853;
+  --warning: #ff6d00;
+  --danger: #d50000;
+  --bg: #f5f6fa;
+  --card-bg: #ffffff;
+  --text: #2d3436;
+  --text-light: #636e72;
+  --border: #dfe6e9;
+  --shadow: 0 4px 20px rgba(108, 99, 255, 0.12);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.2s ease;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #fff;
+  padding: 28px 20px 24px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(108, 99, 255, 0.3);
+}
+
+header h1 {
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+header p {
+  margin-top: 6px;
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  opacity: 0.88;
+}
+
+/* ── Main layout ── */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+}
+
+/* ── Corte cards ── */
+.cortes-grid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+  .cortes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.corte-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.corte-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(108, 99, 255, 0.18);
+}
+
+.corte-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: #fff;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.corte-header h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.corte-badge {
+  background: rgba(255,255,255,0.22);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.corte-body {
+  padding: 20px;
+}
+
+/* ── Input groups ── */
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.weight-tag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-light);
+  background: var(--bg);
+  border-radius: 20px;
+  padding: 2px 9px;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.nota-input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  -moz-appearance: textfield;
+}
+
+.nota-input::-webkit-outer-spin-button,
+.nota-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.nota-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.15);
+}
+
+.nota-input.valid {
+  border-color: var(--success);
+}
+
+.nota-input.invalid {
+  border-color: var(--danger);
+}
+
+.save-btn {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.save-btn:hover {
+  background: var(--primary-dark);
+  transform: scale(1.04);
+}
+
+.save-btn:active {
+  transform: scale(0.97);
+}
+
+/* ── Corte result ── */
+.corte-result {
+  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.corte-result-label {
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.corte-result-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+/* ── Final grade card ── */
+#final-card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 28px 24px;
+  margin-top: 28px;
+  text-align: center;
+}
+
+#final-card h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+#final-grade-display {
+  font-size: clamp(3rem, 12vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1;
+  transition: color var(--transition);
+}
+
+#final-status {
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: color var(--transition);
+}
+
+/* ── Grade colors ── */
+.grade-approved {
+  color: var(--success);
+}
+
+.grade-warning {
+  color: var(--warning);
+}
+
+.grade-failed {
+  color: var(--danger);
+}
+
+/* ── Progress bar ── */
+.progress-bar-wrap {
+  background: var(--border);
+  border-radius: 20px;
+  height: 10px;
+  margin: 16px 0 6px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  transition: width 0.4s ease;
+}
+
+.progress-label {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  text-align: right;
+}
+
+/* ── Clear button ── */
+#clear-btn {
+  display: block;
+  margin: 20px auto 0;
+  background: transparent;
+  border: 2px solid var(--border);
+  color: var(--text-light);
+  border-radius: var(--radius-sm);
+  padding: 9px 22px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+#clear-btn:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ── Toast notification ── */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--text);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 9999;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+#toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Saved indicator ── */
+.saved-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  margin-left: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.saved-dot.visible {
+  opacity: 1;
+}
+
+/* ── Footer ── */
+footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-top: 8px;
+}
+
+/* ── Accessibility ── */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
